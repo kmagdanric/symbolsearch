@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "tiny"
+version = "0.1.0"
+description = "Tiny Arithmetic Parser"
+authors = ["Seungwoo Jung <seungwoojung013@gmail.com>"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^2.11.4"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+flake8 = "^7.1.1"
+isort = "^5.13.2"
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start = "tiny.main:run"
+
+[tool.black]
+target-version = ['py310']
+line-length = 79
+
+[tool.isort]
+profile = "black"
+line_length = 79
+multi_line_output = 3  # Vertical hanging indent (preferred by black)
+include_trailing_comma = true  # Ensure trailing commas in multi-line imports
+force_grid_wrap = 0
+use_parentheses = true  # Required for black compatibility
