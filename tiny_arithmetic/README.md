@@ -20,5 +20,5 @@ Factor = ( Expr )
 - Parenthesis have precedence over everything
 - negation works on factor (the whole expression, or number)
 - All binary operators here are left-associative
-
+- Empty parenthesis is not allowed
 

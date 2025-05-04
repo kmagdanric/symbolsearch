@@ -1,15 +1,37 @@
-from typing import List
+import re
+from typing import List, NamedTuple
 
-ALLOWED_TOKENS = list("+-*/()0123456789")
+
+# A simple Token type with a type name and its string value
+class Token(NamedTuple):
+    type: str
+    value: str
 
 
 class Tokenizer:
-    def tokenize(self, expression: str) -> List[str]:
-        tokens = []
-        expression = expression.replace(" ", "")
-        for token in list(expression):
-            if token in ALLOWED_TOKENS:
-                tokens.append(token)
-            else:
-                raise ValueError(f"Invalid token: {token}")
+    # Regex rules for token types:
+    # including number, operators, parentheses, and whitespace
+    TOKEN_SPEC = [
+        ("NUMBER", r"\d+"),
+        ("PLUS", r"\+"),
+        ("MINUS", r"-"),
+        ("STAR", r"\*"),
+        ("SLASH", r"/"),
+        ("LPAREN", r"\("),
+        ("RPAREN", r"\)"),
+        ("WS", r"\s+"),
+    ]
+
+    def __init__(self):
+        # Compile a single regex with named capture groups for each token type
+        parts = (f"(?P<{name}>{pattern})" for name, pattern in self.TOKEN_SPEC)
+        self.token_regex = re.compile("|".join(parts))
+
+    def tokenize(self, expression: str) -> List[Token]:
+        tokens: List[Token] = []
+        for mo in self.token_regex.finditer(expression):
+            kind = mo.lastgroup
+            if kind == "WS":
+                continue  # skip whitespace
+            tokens.append(Token(kind, mo.group()))
         return tokens
